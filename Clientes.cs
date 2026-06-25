@@ -86,7 +86,8 @@ namespace Verduleria
 
             public void Insert()
             {
-                string connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=verduleria;Integrated Security=True";
+                string connectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=verduleria; Integrated Security=True; TrustServerCertificate = True";
+                //   string connectionString = @"Data Source=localhost\SQL2022; Initial Catalog=verduleria; User ID = sa; Password = lab02; TrustServerCertificate = True";
                 string query = "INSERT INTO Clientes (RUC, razon_social, nombre, apellido, correo, telefono, direccion) " +
                                "VALUES (@RUC, @razonSocial, @nombre, @apellido, @correo, @telefono, @direccion)";
 
@@ -114,7 +115,8 @@ namespace Verduleria
                 SqlCommand mySqlCommand = new SqlCommand();
                 DataTable dt = new DataTable();
 
-                mySqlConnection.ConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=verduleria;Integrated Security=True";
+                mySqlConnection.ConnectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=verduleria; Integrated Security=True; TrustServerCertificate = True";
+                //mySqlConnection.ConnectionString = @"Data Source=localhost\SQL2022; Initial Catalog=verduleria; User ID = sa; Password = lab02; TrustServerCertificate = True";
                 mySqlCommand.Connection = mySqlConnection;
                 mySqlCommand.CommandType = CommandType.Text;
                 mySqlCommand.CommandText = "SELECT client_id, RUC, razon_social, nombre, apellido, correo, telefono, direccion FROM Clientes ORDER BY client_id ASC";
@@ -142,7 +144,8 @@ namespace Verduleria
             #endregion
             public void Update()
             {
-                string connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=verduleria;Integrated Security=True";
+                string connectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=verduleria; Integrated Security=True; TrustServerCertificate = True";
+                //   string connectionString = @"Data Source=localhost\SQL2022; Initial Catalog=verduleria; User ID = sa; Password = lab02; TrustServerCertificate = True";
                 // Modificamos los datos buscando por el RUC (que es único y no cambia)
                 string query = "UPDATE Clientes SET razon_social = @razonSocial, nombre = @nombre, apellido = @apellido, " +
                                "correo = @correo, telefono = @telefono, direccion = @direccion WHERE RUC = @RUC";
@@ -167,7 +170,8 @@ namespace Verduleria
 
             public void Delete()
             {
-                string connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=verduleria;Integrated Security=True";
+                string connectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=verduleria; Integrated Security=True; TrustServerCertificate = True";
+                //   string connectionString = @"Data Source=localhost\SQL2022; Initial Catalog=verduleria; User ID = sa; Password = lab02; TrustServerCertificate = True";
                 string query = "DELETE FROM Clientes WHERE RUC = @RUC";
 
                 using (SqlConnection mySqlConnection = new SqlConnection(connectionString))
@@ -188,9 +192,19 @@ namespace Verduleria
             this.KeyPreview = true;
             this.KeyDown += new KeyEventHandler(frmcliente_KeyDown);
             this.txttelefono.KeyPress += new KeyPressEventHandler(txttelefono_KeyPress);
+            this.txtruc.KeyPress += new KeyPressEventHandler(txtruc_KeyPress);
 
 
             this.nivelUsuarioLogueado = rolUsuario;
+        }
+        private void txtruc_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Verifica si la tecla presionada NO es un número y NO es la tecla de borrar (BackSpace)
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
+            {
+                // Cancela el evento para que la letra no se escriba en el TextBox
+                e.Handled = true;
+            }
         }
         private void txttelefono_KeyPress(object sender, KeyPressEventArgs e)
         {

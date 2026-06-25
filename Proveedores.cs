@@ -74,10 +74,11 @@ namespace Verduleria
             #endregion
 
             #region SQL
-            // === MODIFICADO (Línea ~91): Optimización con bloques 'using' para prevenir bloqueos de conexión ===
+            // Optimización con bloques 'using' para prevenir bloqueos de conexión ===
             public void Insert()
             {
-                string connectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=verduleria; Integrated Security = True; TrustServerCertificate = True";
+                string connectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=verduleria; Integrated Security=True; TrustServerCertificate = True";
+             //   string connectionString = @"Data Source=localhost\SQL2022; Initial Catalog=verduleria; User ID = sa; Password = lab02; TrustServerCertificate = True";
                 string query = "INSERT INTO Proveedor (RUC, razon_social, correo, telefono, ciudad, productos) " +
                                "VALUES (@RUC, @razonSocial, @correo, @telefono, @ciudad, @productos)";
 
@@ -100,7 +101,8 @@ namespace Verduleria
 
             public void Update()
             {
-                string connectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=verduleria; Integrated Security = True; TrustServerCertificate = True";
+                string connectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=verduleria; Integrated Security=True; TrustServerCertificate = True";
+                //   string connectionString = @"Data Source=localhost\SQL2022; Initial Catalog=verduleria; User ID = sa; Password = lab02; TrustServerCertificate = True";
                 string query = "UPDATE Proveedor SET razon_social = @razonSocial, correo = @correo, " +
                                "telefono = @telefono, ciudad = @ciudad, productos = @productos WHERE RUC = @RUC";
 
@@ -124,7 +126,8 @@ namespace Verduleria
             // === AGREGADO: Método Delete que faltaba ===
             public void Delete()
             {
-                string connectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=verduleria; Integrated Security = True; TrustServerCertificate = True";
+                string connectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=verduleria; Integrated Security=True; TrustServerCertificate = True";
+                //   string connectionString = @"Data Source=localhost\SQL2022; Initial Catalog=verduleria; User ID = sa; Password = lab02; TrustServerCertificate = True";
                 string query = "DELETE FROM Proveedor WHERE RUC = @RUC";
 
                 using (SqlConnection mySqlConnection = new SqlConnection(connectionString))
@@ -141,7 +144,8 @@ namespace Verduleria
 
             public DataTable ObtenerProveedoresOrdenados()
             {
-                string connectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=verduleria; Integrated Security = True; TrustServerCertificate = True";
+                string connectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=verduleria; Integrated Security=True; TrustServerCertificate = True";
+                //   string connectionString = @"Data Source=localhost\SQL2022; Initial Catalog=verduleria; User ID = sa; Password = lab02; TrustServerCertificate = True";
                 DataTable dt = new DataTable();
                 string query = "SELECT prov_id, RUC, razon_social, correo, telefono, ciudad, productos FROM Proveedor ORDER BY prov_id ASC";
 
@@ -173,10 +177,21 @@ namespace Verduleria
             InitializeComponent();
             this.KeyPreview = true;
             this.KeyDown += new KeyEventHandler(frmproveedor_KeyDown);
+            this.txtruc.KeyPress += new KeyPressEventHandler(txtruc_KeyPress);
 
             this.txttelefono.KeyPress += new KeyPressEventHandler(txttelefono_KeyPress);
 
             this.nivelUsuarioLogueado = rolUsuario;
+        }
+
+        private void txtruc_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Verifica si la tecla presionada NO es un número y NO es la tecla de borrar (BackSpace)
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
+            {
+                // Cancela el evento para que la letra no se escriba en el TextBox
+                e.Handled = true;
+            }
         }
 
         private void txttelefono_KeyPress(object sender, KeyPressEventArgs e)
@@ -221,7 +236,7 @@ namespace Verduleria
                 Proveedor proveedorServicio = new Proveedor();
                 DataTable dtProveedores = proveedorServicio.ObtenerProveedoresOrdenados();
 
-                // 🌟 AGREGA ESTA LÍNEA AQUÍ: Vincula el DataTable directamente al DataGridView
+                // Vincula el DataTable directamente al DataGridView
                 dgvproveedor.DataSource = dtProveedores;
 
                 

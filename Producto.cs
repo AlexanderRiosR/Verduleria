@@ -57,7 +57,8 @@ namespace Verduleria
             #endregion
 
             #region SQL
-            private readonly string connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=verduleria;Integrated Security=True";
+            //private readonly string connectionString = @"Data Source=localhost\SQL2022; Initial Catalog=verduleria; User ID = sa; Password = lab02; TrustServerCertificate = True";
+            private readonly string connectionString = @"Data Source=.\SQLEXPRESS; Initial Catalog=verduleria; Integrated Security=True; TrustServerCertificate=True";
             public void Insert()
             {
                 // Mapeado exacto a tu tabla: prod_descripcion, tipo_id, stock, Codigo
@@ -266,14 +267,16 @@ namespace Verduleria
                 cbotipo.Text = fila.Cells["tipo"].Value?.ToString() ?? string.Empty;
                 txtstock.Text = fila.Cells["stock"].Value?.ToString() ?? string.Empty;
 
-                // Deshabilitamos el código para proteger la clave primaria al editar
-                txtcodigo.Enabled = false;
+                txtcodigo.Enabled = true;
 
                 // VALIDACIÓN DE ROL Y ACTIVACIÓN DE BOTONES
                 if (nivelUsuarioLogueado == "Admin")
                 {
                     btneditar.Enabled = true;
                     btnborrar.Enabled = true;
+                } else if(nivelUsuarioLogueado == "Repositor")
+                {
+                    btneditar.Enabled = true;
                 }
                 else
                 {

@@ -103,5 +103,18 @@ namespace Verduleria
         {
 
         }
+
+        private void btncerrar_Click(object sender, EventArgs e)
+        {
+            DialogResult resultado = MessageBox.Show("¿Está seguro de que desea cerrar la sesión actual?",
+        "Cerrar Sesión", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (resultado == DialogResult.Yes)
+            {
+                // Al asignar DialogResult.OK, le avisamos al Login que el cierre fue voluntario
+                this.DialogResult = DialogResult.OK;
+                this.Close(); // Cerramos el menú actual
+            }
+        }
     }
 }
