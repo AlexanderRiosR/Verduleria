@@ -71,6 +71,7 @@
             this.txtcontraseña.Name = "txtcontraseña";
             this.txtcontraseña.Size = new System.Drawing.Size(160, 30);
             this.txtcontraseña.TabIndex = 3;
+            this.txtcontraseña.UseSystemPasswordChar = true;
             // 
             // pictureBox1
             // 
